@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { headers } from "next/headers";
 import Stripe from "stripe";
+import dbConnect from "@/app/lib/dbConnect";
+import UserPayment from "@/app/models/UserPayments";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
@@ -25,13 +27,22 @@ export async function POST(request) {
       const checkoutSessionCompleted = event.data.object;
 
       // guardar en una base de datos
+
+      await dbConnect();
+
+      await UserPayment.create({
+        userName: checkoutSessionCompleted.metadata.userName,
+        email: checkoutSessionCompleted.metadata.userEmail,
+        canGetThePrompt: true,
+      });
+
       console.log(
         "Consultado producto con id",
-        checkoutSessionCompleted.metadata.productId
+        checkoutSessionCompleted.metadata.userName,
+        checkoutSessionCompleted.metadata.userEmail
       );
 
       // enviar un correo
-
       console.log({ checkoutSessionCompleted });
       break;
     default:
