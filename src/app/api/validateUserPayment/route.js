@@ -17,7 +17,7 @@ export async function POST(request) {
   const userFound = await UserPayment.findOne({ email: userEmail });
 
   if (!userFound) {
-    console.log("user not found");
+    console.log("user not found in userPayment");
     return NextResponse.json({ message: false }, { status: 200 });
   } else {
     if (userFound.canGetThePrompt) {

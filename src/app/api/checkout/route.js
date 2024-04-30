@@ -6,8 +6,9 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 export async function POST(request) {
   const body = await request.json();
 
+
   // Define el precio correcto para tu producto
-  const correctPrice = 200; // Reemplaza esto con el precio correcto de tu producto
+  const correctPrice = 1000; // Reemplaza esto con el precio correcto de tu producto
 
   // Comprueba si el precio enviado por el cliente es correcto
   if (body.price !== correctPrice) {
@@ -19,7 +20,7 @@ export async function POST(request) {
     line_items: [
       {
         price_data: {
-          currency: "usd",
+          currency: "mxn",
           product_data: {
             name: body.name,
             images: [body.image],
